@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Khavish Auckaloo | Software Developer</title>
+<meta name="description" content="Developer based in Mauritius building desktop applications, web apps and automation in Python and JavaScript. Five open-source projects on GitHub.">
+<link rel="canonical" href="https://a-khavish.github.io/">
+
+<meta property="og:title" content="Khavish Auckaloo | Software Developer">
+<meta property="og:description" content="Developer based in Mauritius building web apps, automation and internal tooling.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://a-khavish.github.io/">
+<meta name="theme-color" content="#050B16">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* tokens */
+:root{
+  --abyss:#050B16;
+  --deep:#0A1726;
+  --shelf:#112B40;
+  --current:#1E4D6B;
+  --foam:#5FD4E4;
+  --spray:#A8E8F0;
+  --sand:#E8F1F5;
+  --mist:#8FA8BA;
+
+  --edge:rgba(95,212,228,.14);
+  --edge-soft:rgba(143,168,186,.12);
+
+  --font-display:'Sora',system-ui,sans-serif;
+  --font-body:'IBM Plex Sans',system-ui,sans-serif;
+
+  --col:min(1120px,calc(100% - 3rem));
+  --read:62ch;
+
+  --bar:112px;            /* nav + tabs height, for scroll-margin */
+
+  --step--1:clamp(.82rem,.78rem + .2vw,.92rem);
+  --step-0:clamp(1rem,.95rem + .25vw,1.12rem);
+  --step-1:clamp(1.3rem,1.15rem + .6vw,1.6rem);
+  --step-2:clamp(1.7rem,1.4rem + 1.3vw,2.4rem);
+  --step-3:clamp(2.3rem,1.7rem + 2.6vw,3.8rem);
+  --step-4:clamp(2.9rem,1.9rem + 4.4vw,5.6rem);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--abyss);
+  color:var(--sand);
+  font-family:var(--font-body);
+  font-size:var(--step-0);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:var(--foam);text-decoration-color:rgba(95,212,228,.35);text-underline-offset:.25em}
+a:hover{text-decoration-color:var(--foam)}
+
+:focus-visible{outline:2px solid var(--foam);outline-offset:3px;border-radius:2px}
+
+h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.08;letter-spacing:-.025em;margin:0}
+p{margin:0}
+
+.wrap{width:var(--col);margin-inline:auto}
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:100;
+  background:var(--foam);color:var(--abyss);padding:.7rem 1.1rem;
+  font-weight:600;border-radius:0 0 6px 0;
+}
+.skip:focus{left:0}
+
+/* particle canvas - behind content, above the gradient */
+#field{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  width:100%;height:100%;display:block;
+}
+@media(prefers-reduced-motion:reduce){#field{display:none}}
+
+.strata{
+  position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:linear-gradient(180deg,
+    var(--abyss) 0%, var(--abyss) 18%, #071221 42%,
+    var(--deep) 68%, #0D1F33 88%, #102638 100%);
+}
+
+/* nav + tab bar */
+.nav{
+  position:sticky;top:0;z-index:40;
+  backdrop-filter:blur(14px);
+  background:rgba(5,11,22,.78);
+}
+.nav__in{
+  width:var(--col);margin-inline:auto;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:2rem;padding:1.05rem 0;
+}
+.mark{
+  font-family:var(--font-display);font-weight:700;font-size:1.02rem;
+  letter-spacing:-.02em;color:var(--sand);text-decoration:none;
+  display:flex;align-items:center;gap:.6rem;
+}
+.mark__dot{
+  width:9px;height:9px;border-radius:50%;background:var(--foam);
+  box-shadow:0 0 14px rgba(95,212,228,.75);flex:none;
+}
+.nav__cta{
+  color:var(--foam);text-decoration:none;font-size:var(--step--1);font-weight:600;
+  border:1px solid var(--edge);padding:.45rem 1.05rem;border-radius:999px;
+  transition:background .2s ease,color .2s ease;white-space:nowrap;
+}
+.nav__cta:hover{background:rgba(95,212,228,.08);color:var(--spray)}
+
+/* the tab bar */
+.tabs{
+  position:sticky;top:60px;z-index:38;
+  background:rgba(5,11,22,.9);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--edge-soft);
+}
+.tabs__in{
+  width:var(--col);margin-inline:auto;
+  display:flex;gap:.3rem;
+  overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
+  scroll-snap-type:x proximity;
+}
+.tabs__in::-webkit-scrollbar{display:none}
+.tab{
+  position:relative;flex:none;scroll-snap-align:start;
+  padding:.95rem 1.15rem;
+  color:var(--mist);text-decoration:none;
+  font-size:var(--step--1);font-weight:500;white-space:nowrap;
+  transition:color .22s ease;
+}
+.tab:hover{color:var(--sand)}
+.tab::after{
+  content:'';position:absolute;left:1.15rem;right:1.15rem;bottom:0;height:2px;
+  background:var(--foam);border-radius:2px 2px 0 0;
+  transform:scaleX(0);transform-origin:center;
+  transition:transform .28s cubic-bezier(.2,.7,.3,1);
+}
+.tab[aria-current="true"]{color:var(--spray)}
+.tab[aria-current="true"]::after{transform:scaleX(1)}
+@media(max-width:620px){
+  .tabs{top:56px}
+  .tab{padding:.85rem .85rem}
+  :root{--bar:100px}
+}
+
+/* hero */
+.hero{position:relative;isolation:isolate;padding:clamp(4.5rem,12vh,8rem) 0 clamp(4rem,9vh,6.5rem);overflow:hidden}
+.caustics{
+  position:absolute;inset:-25% -10% auto -10%;height:135%;
+  z-index:0;pointer-events:none;opacity:.55;
+  background:
+    radial-gradient(42% 30% at 18% 22%,rgba(95,212,228,.20),transparent 62%),
+    radial-gradient(34% 26% at 76% 14%,rgba(30,77,107,.42),transparent 64%),
+    radial-gradient(48% 34% at 56% 48%,rgba(95,212,228,.10),transparent 68%);
+  filter:blur(28px);
+  animation:drift 26s ease-in-out infinite alternate;
+}
+.caustics::after{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(104deg,
+    transparent 0 42px, rgba(168,232,240,.055) 42px 44px, transparent 44px 92px);
+  animation:shimmer 19s linear infinite;
+}
+@keyframes drift{from{transform:translate3d(-2.5%,0,0) scale(1)}to{transform:translate3d(2.5%,2%,0) scale(1.07)}}
+@keyframes shimmer{from{transform:translate3d(0,0,0)}to{transform:translate3d(92px,0,0)}}
+
+.hero .wrap{position:relative;z-index:1}
+.hero__kicker{display:inline-flex;align-items:center;gap:.65rem;color:var(--mist);font-size:var(--step--1);margin-bottom:1.5rem}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--foam);flex:none;animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.82)}}
+
+.hero h1{font-size:var(--step-4);font-weight:300;max-width:15ch;margin-bottom:1.6rem}
+.hero h1 strong{font-weight:700;color:var(--spray)}
+.hero__lede{max-width:var(--read);color:var(--mist);font-size:var(--step-1);line-height:1.5;margin-bottom:2.2rem}
+.hero__actions{display:flex;flex-wrap:wrap;gap:.9rem;align-items:center}
+
+.btn{
+  display:inline-block;font-family:var(--font-body);font-weight:600;
+  font-size:var(--step--1);padding:.85rem 1.6rem;border-radius:999px;
+  text-decoration:none;border:1px solid transparent;cursor:pointer;
+  transition:background .2s ease,border-color .2s ease,color .2s ease;
+}
+.btn--solid{background:var(--foam);color:#04121A;box-shadow:0 8px 32px -12px rgba(95,212,228,.6)}
+.btn--solid:hover{background:var(--spray)}
+.btn--solid:disabled{opacity:.55;cursor:not-allowed}
+.btn--ghost{border-color:var(--current);color:var(--sand)}
+.btn--ghost:hover{border-color:var(--foam);color:var(--foam)}
+
+.rise{opacity:0;transform:translateY(14px);animation:rise .9s cubic-bezier(.2,.7,.3,1) forwards}
+.rise:nth-child(1){animation-delay:.05s}
+.rise:nth-child(2){animation-delay:.16s}
+.rise:nth-child(3){animation-delay:.27s}
+.rise:nth-child(4){animation-delay:.38s}
+@keyframes rise{to{opacity:1;transform:none}}
+
+/* sections */
+.section{padding:clamp(3.5rem,8vh,6rem) 0;position:relative;scroll-margin-top:var(--bar)}
+.section + .section{border-top:1px solid var(--edge-soft)}
+.section__head{margin-bottom:2.8rem;max-width:var(--read)}
+.section__head h2{font-size:var(--step-2);margin-bottom:.85rem}
+.section__head p{color:var(--mist)}
+
+/* About */
+.about{display:grid;grid-template-columns:1.6fr 1fr;gap:clamp(2rem,6vw,5rem);align-items:start}
+.about__body p{max-width:var(--read);color:var(--mist);margin-bottom:1.15rem}
+.about__body p:first-child{color:var(--sand);font-size:var(--step-1);line-height:1.55}
+.facts{display:flex;flex-direction:column;gap:0}
+.fact{padding:1.05rem 0;border-bottom:1px solid var(--edge-soft)}
+.fact:first-child{border-top:1px solid var(--edge-soft)}
+.fact dt{color:var(--mist);font-size:var(--step--1);margin-bottom:.2rem}
+.fact dd{margin:0;font-family:var(--font-display);font-weight:600;font-size:1.02rem}
+@media(max-width:860px){.about{grid-template-columns:1fr}}
+
+/* Services */
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--edge-soft);border:1px solid var(--edge-soft)}
+.service{background:var(--deep);padding:2rem 1.7rem}
+.service h3{font-size:var(--step-1);margin-bottom:.8rem;color:var(--spray)}
+.service p{color:var(--mist);font-size:.96rem}
+.service ul{margin:1.1rem 0 0;padding:0;list-style:none}
+.service li{color:var(--mist);font-size:var(--step--1);padding:.35rem 0 .35rem 1.1rem;position:relative}
+.service li::before{content:'';position:absolute;left:0;top:.95em;width:5px;height:1px;background:var(--foam)}
+@media(max-width:860px){.services{grid-template-columns:1fr}}
+
+/* Projects */
+.work{display:flex;flex-direction:column}
+.piece{
+  display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;
+  padding:1.8rem 0;border-bottom:1px solid var(--edge-soft);
+  text-decoration:none;color:inherit;
+}
+.piece:first-child{border-top:1px solid var(--edge-soft)}
+.piece__name{display:block;font-family:var(--font-display);font-weight:600;font-size:var(--step-1);margin-bottom:.45rem;transition:color .2s ease}
+.piece:hover .piece__name{color:var(--foam)}
+.piece__desc{display:block;color:var(--mist);max-width:58ch;font-size:.97rem;line-height:1.6}
+.piece__with{display:block;color:var(--foam);font-size:var(--step--1);margin-top:.5rem;opacity:.85}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.85rem}
+.tag{font-size:.74rem;color:var(--mist);border:1px solid var(--edge-soft);padding:.2rem .6rem;border-radius:999px}
+.piece__go{color:var(--mist);font-size:1.3rem;line-height:1;transition:color .2s ease,transform .2s ease}
+.piece:hover .piece__go{color:var(--foam);transform:translateX(3px)}
+@media(max-width:620px){.piece{grid-template-columns:1fr;gap:.5rem}.piece__go{display:none}}
+
+.work__foot{margin-top:2rem;color:var(--mist);font-size:.96rem}
+.work[data-busy="1"]{opacity:.5;transition:opacity .25s ease}
+.piece__meta{display:flex;align-items:center;gap:.5rem;color:var(--mist);font-size:var(--step--1);margin-top:.5rem}
+.piece__lang{display:inline-flex;align-items:center;gap:.38rem}
+.piece__dot{width:8px;height:8px;border-radius:50%;background:var(--current);flex:none}
+
+/* How I work */
+.method{display:grid;grid-template-columns:repeat(2,1fr);gap:0 clamp(2rem,6vw,4rem)}
+.step{padding:1.6rem 0;border-top:1px solid var(--edge-soft);display:grid;grid-template-columns:2.2rem 1fr;gap:1rem;align-items:start}
+.step__n{
+  font-family:var(--font-display);font-weight:600;font-size:.86rem;
+  color:var(--foam);padding-top:.28rem;font-variant-numeric:tabular-nums;
+}
+.step h3{font-size:1.05rem;margin-bottom:.45rem}
+.step p{color:var(--mist);font-size:.95rem}
+@media(max-width:760px){.method{grid-template-columns:1fr}}
+
+/* Contact */
+.contact{display:grid;grid-template-columns:1.25fr .85fr;gap:clamp(2rem,6vw,4.5rem);align-items:start}
+.note{border-left:2px solid var(--current);padding-left:1.3rem}
+.note h3{font-size:var(--step-1);margin-bottom:1rem}
+.note ul{margin:0;padding:0;list-style:none}
+.note li{color:var(--mist);font-size:.95rem;padding:.5rem 0;border-bottom:1px solid var(--edge-soft)}
+.note li:last-child{border-bottom:0}
+.note__foot{margin-top:1.6rem;color:var(--mist);font-size:var(--step--1)}
+
+.reach__lede{color:var(--mist);max-width:46ch;margin-bottom:1.8rem}
+.reach__mail{
+  display:inline-block;font-family:var(--font-display);font-weight:300;
+  font-size:clamp(1.35rem,1rem + 2vw,2.3rem);letter-spacing:-.02em;
+  color:var(--sand);text-decoration:none;word-break:break-word;line-height:1.15;
+  border-bottom:1px solid var(--edge);padding-bottom:.25rem;
+  transition:color .2s ease,border-color .2s ease;
+}
+.reach__mail:hover{color:var(--foam);border-color:var(--foam)}
+.reach__acts{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.9rem}
+.reach__said{color:var(--foam);font-size:var(--step--1);margin-top:.9rem;min-height:1.3em}
+.reach__foot{color:var(--mist);font-size:var(--step--1);margin-top:1.9rem;opacity:.8;max-width:48ch}
+
+@media(max-width:860px){.contact{grid-template-columns:1fr}}
+
+/* Skills & CV */
+.cvhead{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;margin-bottom:2.8rem}
+.cvhead .section__head{margin-bottom:0}
+.kit{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--edge-soft);border:1px solid var(--edge-soft);margin-bottom:2.6rem}
+.kit__g{background:var(--deep);padding:1.6rem 1.5rem}
+.kit__g h3{font-size:1.02rem;margin-bottom:.35rem;color:var(--spray)}
+.kit__g p{color:var(--mist);font-size:var(--step--1);margin-bottom:1rem;opacity:.85}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{font-size:.8rem;color:var(--sand);border:1px solid var(--edge-soft);background:rgba(5,11,22,.4);padding:.28rem .7rem;border-radius:999px;white-space:nowrap}
+.chip--lead{border-color:var(--edge);color:var(--spray)}
+.chip--soft{color:var(--mist);opacity:.8}
+@media(max-width:760px){.kit{grid-template-columns:1fr}}
+
+.cvsplit{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,4rem)}
+@media(max-width:860px){.cvsplit{grid-template-columns:1fr}}
+.cvsplit h3{font-size:var(--step-1);margin-bottom:1.3rem}
+
+.ed{padding:1.15rem 0;border-top:1px solid var(--edge-soft)}
+.ed:last-child{border-bottom:1px solid var(--edge-soft)}
+.ed__top{display:flex;justify-content:space-between;gap:1rem;align-items:baseline;flex-wrap:wrap}
+.ed__what{display:block;font-family:var(--font-display);font-weight:600;font-size:1.02rem}
+.ed__when{color:var(--mist);font-size:var(--step--1);white-space:nowrap;font-variant-numeric:tabular-nums}
+.ed__where{color:var(--mist);font-size:.93rem;margin-top:.25rem}
+.ed__now{color:var(--foam);font-size:.8rem;border:1px solid var(--edge);border-radius:999px;padding:.1rem .55rem;margin-left:.5rem;white-space:nowrap}
+
+.cert{padding:.95rem 0;border-top:1px solid var(--edge-soft);display:grid;grid-template-columns:1fr auto;gap:.6rem 1rem;align-items:baseline}
+.cert:last-child{border-bottom:1px solid var(--edge-soft)}
+.cert__n{display:block;font-size:.97rem}
+.cert__by{color:var(--mist);font-size:var(--step--1);display:block;margin-top:.15rem}
+.cert__d{color:var(--mist);font-size:var(--step--1);white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* Footer */
+.foot{border-top:1px solid var(--edge-soft);padding:3rem 0 3.5rem}
+.foot__in{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap}
+.foot__mail{font-family:var(--font-display);font-size:clamp(1.25rem,1rem + 1.4vw,2rem);font-weight:300;color:var(--sand);text-decoration:none;letter-spacing:-.02em;word-break:break-word}
+.foot__mail:hover{color:var(--foam)}
+.social{display:flex;gap:.6rem;margin-top:1.3rem}
+.social a{width:40px;height:40px;border:1px solid var(--edge-soft);border-radius:50%;display:grid;place-items:center;color:var(--mist);transition:color .2s ease,border-color .2s ease}
+.social a:hover{color:var(--foam);border-color:var(--edge)}
+.social svg{width:17px;height:17px;fill:currentColor}
+.foot__meta{color:var(--mist);font-size:var(--step--1);text-align:right}
+@media(max-width:620px){.foot__meta{text-align:left}}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+  .rise{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div class="strata" aria-hidden="true"></div>
+<canvas id="field" aria-hidden="true"></canvas>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav__in">
+    <a class="mark" href="#top"><span class="mark__dot"></span>Khavish Auckaloo</a>
+    <a href="#contact" class="nav__cta">Start a project</a>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="tabs__in" id="tabs">
+    <a class="tab" href="#about">About</a>
+    <a class="tab" href="#services">What I build</a>
+    <a class="tab" href="#work">Projects</a>
+    <a class="tab" href="#skills">Skills &amp; CV</a>
+    <a class="tab" href="#method">How I work</a>
+    <a class="tab" href="#contact">Contact</a>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- hero -->
+  <section class="hero" id="top">
+    <div class="caustics" aria-hidden="true"></div>
+    <div class="wrap">
+      <p class="hero__kicker rise"><span class="pulse" aria-hidden="true"></span>Taking on new projects</p>
+      <h1 class="rise">I build software, <strong>end to end</strong>.</h1>
+      <p class="hero__lede rise">Developer based in Mauritius. Web apps, automation, and the tooling
+         that holds them together. Everything I've built so far is open source, so you can read the
+         code before you decide to work with me.</p>
+      <div class="hero__actions rise">
+        <a class="btn btn--solid" href="#contact">Start a project</a>
+        <a class="btn btn--ghost" href="#work">See what I've built</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- about -->
+  <section class="section" id="about">
+    <div class="wrap about">
+      <div class="about__body">
+        <p>I'm early in my freelance work, and I'd rather be upfront about that than pad a page with claims.</p>
+        <p>What I do have is code you can read. Every project below is public: the commits, the
+           mistakes, the refactors. That's a more honest signal than a logo wall, and it means you can
+           judge how I actually work before spending anything.</p>
+        <p>I build because I want to know how things work underneath. Quietude began as a question
+           about whether a voice assistant could work without sending anything to a server, and
+           answering it meant learning speech recognition, speech synthesis, face recognition and how
+           to keep a model that crashes from taking the whole application down with it. Camaloop began
+           as a question about where a webcam feed actually lives on Linux. Most of what I know came
+           from picking a problem slightly beyond me and refusing to put it down.</p>
+        <p>The machine learning side holds my attention most right now. Quietude runs two speech models
+           at once. A small streaming one always listening for a wake phrase, and a quantized Whisper
+           that transcribes properly once it's awake. It speaks through ONNX voice models, and recognises
+           its user with a face classifier trained on their own machine. It can call a hosted model if
+           you give it a key, but the interesting part is how much of it works without one. I want to
+           keep building in that direction.</p>
+        <p>I'm in the first year of an IT degree at Curtin Mauritius, so there's a lot I haven't met
+           yet, and I'd rather say so now than discover it halfway through your project. I work across
+           the stack: web applications, automation, internal tools, and the deployment and maintenance
+           side that usually gets skipped. On larger builds I work alongside another developer, so
+           there's capacity for more than one person's worth of project. Being new means I'm responsive,
+           priced accessibly, and more interested in the problem than the invoice. It doesn't mean I'll
+           take on something I can't deliver: if a project isn't a fit, I'll say so.</p>
+      </div>
+      <dl class="facts">
+        <div class="fact"><dt>Based in</dt><dd>Mauritius · UTC+4</dd></div>
+        <div class="fact"><dt>Studying</dt><dd>BSc (Hons) IT, Curtin</dd></div>
+        <div class="fact"><dt>Working with</dt><dd>Clients worldwide</dd></div>
+        <div class="fact"><dt>Typical project</dt><dd>1–6 weeks</dd></div>
+        <div class="fact"><dt>Currently</dt><dd>Open to new work</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- services -->
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="section__head">
+        <h2>What I build</h2>
+        <p>Three broad areas cover most of it. If what you need sits outside them, describe it anyway. The answer is usually yes.</p>
+      </div>
+      <div class="services">
+        <article class="service">
+          <h3>Web applications</h3>
+          <p>Products with real users and real data behind them, not just a front end.</p>
+          <ul>
+            <li>Dashboards and admin panels</li>
+            <li>Booking and scheduling systems</li>
+            <li>Customer portals and logins</li>
+            <li>APIs and third-party integrations</li>
+          </ul>
+        </article>
+        <article class="service">
+          <h3>Websites</h3>
+          <p>Fast, hand-built sites that don't depend on a monthly page-builder subscription.</p>
+          <ul>
+            <li>Business and portfolio sites</li>
+            <li>Landing pages</li>
+            <li>Performance and SEO work</li>
+            <li>Hosting and deployment setup</li>
+          </ul>
+        </article>
+        <article class="service">
+          <h3>Automation</h3>
+          <p>The repetitive job someone does by hand every week, handed to a machine instead.</p>
+          <ul>
+            <li>Scripts and scheduled jobs</li>
+            <li>Data scraping and aggregation</li>
+            <li>Reporting pipelines</li>
+            <li>Internal tooling</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- fallback list; replaced by the GitHub fetch when repos are tagged -->
+  <section class="section" id="work">
+    <div class="wrap">
+      <div class="section__head">
+        <h2>Projects</h2>
+        <p>Open source, all public on GitHub. Clone any of it and run it yourself.</p>
+      </div>
+      <div class="work" id="work-list">
+
+        <a class="piece" href="https://github.com/a-khavish/quietude" target="_blank" rel="noopener">
+          <span>
+            <span class="piece__name">Quietude</span>
+            <span class="piece__desc">A voice assistant for Linux that never sends your voice anywhere.
+              Speech recognition, speech synthesis and face login all run on the machine it's installed
+              on, so nothing you say reaches a server.</span>
+            <span class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">Vue 3</span><span class="tag">Electron</span><span class="tag">OpenCV</span></span>
+          </span>
+          <span class="piece__go" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="piece" href="https://github.com/a-khavish/quenchkey" target="_blank" rel="noopener">
+          <span>
+            <span class="piece__name">Quenchkey</span>
+            <span class="piece__desc">Encrypted file vaults that expire. You send someone a contract or a
+              passport scan meant for this week, not forever, so this locks it to rules you set and issues a
+              signed certificate once it's destroyed. Argon2id, ChaCha20-Poly1305 and SLIP-39 recovery
+              shares, covered by 617 tests.</span>
+            <span class="tags"><span class="tag">Python</span><span class="tag">PyQt5</span><span class="tag">Cryptography</span></span>
+          </span>
+          <span class="piece__go" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="piece" href="https://github.com/a-khavish/camaloop" target="_blank" rel="noopener">
+          <span>
+            <span class="piece__name">Camaloop</span>
+            <span class="piece__desc">One camera in, any camera out. Edits your webcam feed while it runs
+              and publishes the result as a second camera that video calls and browsers can select like any
+              other. Drives Video4Linux directly. 32 effects, 219 tests.</span>
+            <span class="tags"><span class="tag">Python</span><span class="tag">PyQt5</span><span class="tag">OpenCV</span><span class="tag">Video4Linux</span></span>
+          </span>
+          <span class="piece__go" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="piece" href="https://github.com/a-khavish/venvyard" target="_blank" rel="noopener">
+          <span>
+            <span class="piece__name">venvyard</span>
+            <span class="piece__desc">Every Python virtual environment on your machine kept in one place and
+              managed with one command: create, find, inspect, copy, repair and prune, including the ones
+              that silently break when you rename a folder. No dependencies.</span>
+            <span class="tags"><span class="tag">Python</span><span class="tag">CLI</span><span class="tag">Bash</span></span>
+          </span>
+          <span class="piece__go" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="piece" href="https://github.com/a-khavish/stegtexthider" target="_blank" rel="noopener">
+          <span>
+            <span class="piece__name">stegtexthider</span>
+            <span class="piece__desc">Hides a password-encrypted message inside ordinary text using invisible
+              Unicode characters. Pull the hidden characters out without the password and all you have is
+              ciphertext. Importable as a library, with a CLI and a small web UI.</span>
+            <span class="tags"><span class="tag">Python</span><span class="tag">Cryptography</span><span class="tag">Library</span></span>
+          </span>
+          <span class="piece__go" aria-hidden="true">↗</span>
+        </a>
+
+      </div>
+      <p class="work__foot">Everything else lives on
+        <a href="https://github.com/a-khavish" target="_blank" rel="noopener">GitHub</a>.</p>
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <div class="wrap">
+      <div class="cvhead">
+        <div class="section__head">
+          <h2>Skills &amp; CV</h2>
+          <p>What I've actually shipped with, and what I'm being taught. The two are listed
+             separately on purpose, because I'd rather you know which is which before you ask me a
+             question about it.</p>
+        </div>
+        <a class="btn btn--ghost" href="khavish-auckaloo-cv.pdf" download>Download CV (PDF)</a>
+      </div>
+
+      <div class="kit">
+        <div class="kit__g">
+          <h3>Web development</h3>
+          <p>Whole sites, design through deployment. This one included.</p>
+          <div class="chips">
+            <span class="chip chip--lead">Vue 3 SPAs</span>
+            <span class="chip chip--lead">Flask backends</span>
+            <span class="chip">Semantic HTML</span>
+            <span class="chip">Modern CSS</span>
+            <span class="chip">Responsive layout</span>
+            <span class="chip">Accessibility</span>
+            <span class="chip">Canvas animation</span>
+            <span class="chip">Static hosting &amp; CI</span>
+          </div>
+        </div>
+
+        <div class="kit__g">
+          <h3>Languages</h3>
+          <p>Used across the projects above.</p>
+          <div class="chips">
+            <span class="chip chip--lead">Python</span>
+            <span class="chip chip--lead">JavaScript</span>
+            <span class="chip">HTML</span>
+            <span class="chip">CSS</span>
+            <span class="chip">Bash</span>
+          </div>
+        </div>
+
+        <div class="kit__g">
+          <h3>Studying at Curtin</h3>
+          <p>Coursework on my IT degree. Not yet used on anything public.</p>
+          <div class="chips">
+            <span class="chip chip--soft">Java</span>
+            <span class="chip chip--soft">C</span>
+            <span class="chip chip--soft">C++</span>
+            <span class="chip chip--soft">PHP</span>
+          </div>
+        </div>
+
+        <div class="kit__g">
+          <h3>Frameworks &amp; libraries</h3>
+          <p>Each one is in a repo you can open.</p>
+          <div class="chips">
+            <span class="chip">Vue 3</span>
+            <span class="chip">Vite</span>
+            <span class="chip">Pinia</span>
+            <span class="chip">Vue Router</span>
+            <span class="chip">Flask</span>
+            <span class="chip">PyQt5</span>
+            <span class="chip">Electron</span>
+            <span class="chip">OpenCV</span>
+            <span class="chip">NumPy</span>
+            <span class="chip">pytest</span>
+          </div>
+        </div>
+
+        <div class="kit__g">
+          <h3>Speech, vision &amp; AI</h3>
+          <p>All of this is wired up inside Quietude.</p>
+          <div class="chips">
+            <span class="chip">Vosk</span>
+            <span class="chip">faster-whisper</span>
+            <span class="chip">Piper (ONNX)</span>
+            <span class="chip">OpenCV Haar cascades</span>
+            <span class="chip">LBPH face recognition</span>
+            <span class="chip">Gemini API</span>
+          </div>
+        </div>
+
+        <div class="kit__g">
+          <h3>Testing &amp; release</h3>
+          <p>Quenchkey has 617 tests, Camaloop 219. Both run on every push.</p>
+          <div class="chips">
+            <span class="chip">pytest</span>
+            <span class="chip">GitHub Actions CI</span>
+            <span class="chip">Git</span>
+            <span class="chip">Semantic versioning</span>
+            <span class="chip">Changelogs</span>
+            <span class="chip">Issue &amp; PR templates</span>
+          </div>
+        </div>
+
+        <div class="kit__g">
+          <h3>Platforms</h3>
+          <p>Where the projects actually run.</p>
+          <div class="chips">
+            <span class="chip">Linux (Ubuntu)</span>
+            <span class="chip">Video4Linux</span>
+            <span class="chip">Python packaging</span>
+            <span class="chip">Electron desktop builds</span>
+            <span class="chip">GitHub Pages</span>
+          </div>
+        </div>
+
+        <div class="kit__g">
+          <h3>Security &amp; cryptography</h3>
+          <p>Used, not implemented from scratch. The primitives come from audited libraries.</p>
+          <div class="chips">
+            <span class="chip">Argon2id</span>
+            <span class="chip">ChaCha20-Poly1305</span>
+            <span class="chip">AES-256-GCM</span>
+            <span class="chip">Ed25519</span>
+            <span class="chip">SLIP-39 secret sharing</span>
+            <span class="chip">scrypt</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cvsplit">
+        <div>
+          <h3>Education</h3>
+          <div class="ed">
+            <div class="ed__top">
+              <span class="ed__what">BSc (Hons) Information Technology<span class="ed__now">In progress</span></span>
+              <span class="ed__when">2026 – 2029</span>
+            </div>
+            <p class="ed__where">Curtin Mauritius</p>
+          </div>
+          <div class="ed">
+            <div class="ed__top">
+              <span class="ed__what">Higher School Certificate &amp; A-Levels</span>
+              <span class="ed__when">2021 – 2024</span>
+            </div>
+            <p class="ed__where">Sir Abdool Raman Osman State College</p>
+          </div>
+        </div>
+
+        <div>
+          <h3>Certificates</h3>
+          <div class="cert">
+            <span class="cert__n">Advanced Networking (Cisco CCNA curriculum)<span class="cert__by">IT Academy Institution</span></span>
+            <span class="cert__d">2025 – 2026</span>
+          </div>
+          <div class="cert">
+            <span class="cert__n">Computer Maintenance &amp; Repair<span class="cert__by">Venyleos Training Centre</span></span>
+            <span class="cert__d">2025</span>
+          </div>
+          <div class="cert">
+            <span class="cert__n">Digital Proficiency<span class="cert__by">Online course</span></span>
+            <span class="cert__d"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="method">
+    <div class="wrap">
+      <div class="section__head">
+        <h2>How I work</h2>
+        <p>No testimonials yet, because I'm new. So here's exactly what working with me looks like instead.</p>
+      </div>
+      <div class="method">
+
+        <article class="step">
+          <span class="step__n">01</span>
+          <div>
+            <h3>We scope it before anything else</h3>
+            <p>A call or a long email where I push back on the brief until we both know what
+               "finished" means. Free, and it's where most project failures get prevented.</p>
+          </div>
+        </article>
+
+        <article class="step">
+          <span class="step__n">02</span>
+          <div>
+            <h3>You get a fixed quote</h3>
+            <p>Written scope, price, and timeline before work starts. If the scope changes later,
+               we agree the new number first, so no surprise invoices.</p>
+          </div>
+        </article>
+
+        <article class="step">
+          <span class="step__n">03</span>
+          <div>
+            <h3>You see it as it's built</h3>
+            <p>Working builds throughout, not one reveal at the end. If it's drifting from what
+               you pictured, you find out in week one rather than week six.</p>
+          </div>
+        </article>
+
+        <article class="step">
+          <span class="step__n">04</span>
+          <div>
+            <h3>You own everything</h3>
+            <p>The code, the repo, the accounts, the deployment. No lock-in and no dependency on
+               me staying reachable. I'll document it so another developer could pick it up.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- contact -->
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="section__head">
+        <h2>Start a project</h2>
+        <p>Tell me what you're trying to build. I read every email myself and reply within two working days.</p>
+      </div>
+
+      <div class="contact">
+        <div class="reach">
+          <p class="reach__lede">Email is the whole process. No form, no autoresponder,
+             nothing sitting in a queue. It comes straight to me and I answer it myself.</p>
+
+          <a class="reach__mail" id="mailLink"
+             href="mailto:a.khavish.personal@gmail.com?subject=Project%20enquiry">a.khavish.personal@gmail.com</a>
+
+          <div class="reach__acts">
+            <a class="btn btn--solid" href="mailto:a.khavish.personal@gmail.com?subject=Project%20enquiry">Open in mail app</a>
+            <button class="btn btn--ghost" type="button" id="copyBrief">Copy a starter message</button>
+          </div>
+          <p class="reach__said" id="copySaid" role="status" aria-live="polite"></p>
+
+          <p class="reach__foot">On webmail and the button above did nothing? That's a mailto link with
+             no handler set, so copy the address instead. Replies go out within two working days.</p>
+        </div>
+
+        <aside class="note">
+          <h3>What to put in it</h3>
+          <ul>
+            <li>The problem, before the solution you had in mind</li>
+            <li>Who will use it, and roughly how many</li>
+            <li>Anything that already exists: a spreadsheet, an old site, a competitor</li>
+            <li>Your real deadline, including whether it's movable</li>
+            <li>A budget, if you have one in mind</li>
+          </ul>
+          <p class="note__foot">Have files to share? Mention it and I'll send you an upload link,
+            no need to attach anything here.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <div>
+      <a class="foot__mail" href="mailto:a.khavish.personal@gmail.com">a.khavish.personal@gmail.com</a>
+      <div class="social">
+        <a href="https://github.com/a-khavish" aria-label="GitHub" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 .3a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0C18.9 4.6 20 4.9 20 4.9c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0012 .3z"/></svg>
+        </a>
+        <a href="#" aria-label="LinkedIn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.82-2.05 3.75-2.05C21.3 8.65 22 10.9 22 14v7h-4v-6.2c0-1.5 0-3.4-2.1-3.4s-2.4 1.6-2.4 3.3V21h-4z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.17.05 1.8.25 2.23.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.42.37 1.06.42 2.23.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.05 1.17-.25 1.8-.42 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.17-1.06.37-2.23.42-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.17-.05-1.8-.25-2.23-.42a3.8 3.8 0 01-1.38-.9 3.8 3.8 0 01-.9-1.38c-.17-.42-.37-1.06-.42-2.23C2.21 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.05-1.17.25-1.8.42-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.17 1.06-.37 2.23-.42C8.4 2.21 8.8 2.2 12 2.2zm0 1.8c-3.14 0-3.5 0-4.74.07-1.14.05-1.76.24-2.17.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.17C2.4 8.5 2.4 8.86 2.4 12s0 3.5.07 4.74c.05 1.14.24 1.76.4 2.17.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.17.4 1.24.07 1.6.07 4.74.07s3.5 0 4.74-.07c1.14-.05 1.76-.24 2.17-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.17.07-1.24.07-1.6.07-4.74s0-3.5-.07-4.74c-.05-1.14-.24-1.76-.4-2.17a3.6 3.6 0 00-.88-1.35 3.6 3.6 0 00-1.35-.88c-.41-.16-1.03-.35-2.17-.4C15.5 4 15.14 4 12 4zm0 3.05a4.95 4.95 0 110 9.9 4.95 4.95 0 010-9.9zm0 1.8a3.15 3.15 0 100 6.3 3.15 3.15 0 000-6.3zm5.2-1.1a1.15 1.15 0 11-2.3 0 1.15 1.15 0 012.3 0z"/></svg>
+        </a>
+        <a href="#" aria-label="X" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.22-6.82-5.96 6.82H1.68l7.73-8.84L1.25 2.25h6.82l4.71 6.23zm-1.16 17.52h1.83L7.01 4.13H5.04z"/></svg>
+        </a>
+      </div>
+    </div>
+    <p class="foot__meta">
+      Built and maintained by hand.<br>
+      <span id="year">2026</span> · Mauritius
+    </p>
+  </div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// mailto: is dead for a lot of webmail users, so offer the text too
+(() => {
+  const btn  = document.getElementById('copyBrief');
+  const said = document.getElementById('copySaid');
+  if (!btn || !said) return;
+
+  const TEMPLATE = [
+    'Hi Khavish,',
+    '',
+    'What I need building:',
+    '',
+    'Who it is for:',
+    '',
+    'Anything that already exists (a site, a spreadsheet, a competitor):',
+    '',
+    'When I need it by:',
+    '',
+    'Budget, if I have one in mind:',
+    '',
+    'Thanks,'
+  ].join('\n');
+
+  async function copy(){
+    try {
+      await navigator.clipboard.writeText(TEMPLATE);
+      said.textContent = 'Copied. Paste it into a new email to the address above.';
+    } catch {
+      // clipboard API needs https + permission; fall back to execCommand
+      const ta = document.createElement('textarea');
+      ta.value = TEMPLATE;
+      ta.setAttribute('readonly','');
+      ta.style.cssText = 'position:absolute;left:-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch {}
+      document.body.removeChild(ta);
+      said.textContent = ok
+        ? 'Copied. Paste it into a new email to the address above.'
+        : 'Couldn’t reach the clipboard. The address is just above, write whatever suits you.';
+    }
+    clearTimeout(btn._t);
+    btn._t = setTimeout(() => { said.textContent = ''; }, 6000);
+  }
+
+  btn.addEventListener('click', copy);
+})();
+
+
+
+
+
+// background particle field. off under reduced-motion, paused when hidden.
+(() => {
+  const canvas = document.getElementById('field');
+  if (!canvas) return;
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduced.matches) return;
+
+  const CFG = {
+    count: 78, maxCount: 104,
+    linkDist: 132, pullDist: 190, pushDist: 72,
+    speed: 0.18,
+    dot: 'rgba(95,212,228,',      // --foam
+    line: 'rgba(95,212,228,',
+    cursorLine: 'rgba(168,232,240,'  // --spray, for links to the cursor
+  };
+
+  const ctx = canvas.getContext('2d', { alpha: true });
+  let W = 0, H = 0, dpr = 1, parts = [], raf = null, running = false;
+  const mouse = { x: -9999, y: -9999, active: false };
+
+  function resize(){
+    dpr = Math.min(devicePixelRatio || 1, 1.5); // 2x+ costs fill rate for no visible gain
+    W = innerWidth; H = innerHeight;
+    canvas.width = Math.floor(W * dpr);
+    canvas.height = Math.floor(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // scale count to viewport area
+    const n = Math.min(CFG.maxCount,
+                Math.round(CFG.count * Math.sqrt((W * H) / (1440 * 900))));
+    build(n);
+  }
+
+  function build(n){
+    parts = [];
+    for (let i = 0; i < n; i++){
+      const a = Math.random() * Math.PI * 2;
+      parts.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: Math.cos(a) * CFG.speed,
+        vy: Math.sin(a) * CFG.speed,
+        r: 0.8 + Math.random() * 1.5,
+        // vary brightness for depth
+        a: 0.25 + Math.random() * 0.45
+      });
+    }
+  }
+
+  // batch segments into alpha bands - one stroke each instead of ~600
+  const BANDS = 6;
+  const linkPaths = [], cursorPaths = [], dotPaths = [];
+
+  function frame(){
+    ctx.clearRect(0, 0, W, H);
+
+    for (const p of parts){
+      p.x += p.vx;
+      p.y += p.vy;
+
+      // wrap instead of bouncing, no visible walls
+      if (p.x < -10) p.x = W + 10; else if (p.x > W + 10) p.x = -10;
+      if (p.y < -10) p.y = H + 10; else if (p.y > H + 10) p.y = -10;
+
+      if (mouse.active){
+        const dx = mouse.x - p.x, dy = mouse.y - p.y;
+        const d = Math.hypot(dx, dy);
+        if (d < CFG.pushDist && d > 0.1){
+          // close in: shove outward, strongest at the centre
+          const f = (1 - d / CFG.pushDist) * 0.9;
+          p.x -= (dx / d) * f;
+          p.y -= (dy / d) * f;
+        } else if (d < CFG.pullDist){
+          // further out: drift gently toward the cursor
+          const f = (1 - d / CFG.pullDist) * 0.055;
+          p.x += (dx / d) * f;
+          p.y += (dy / d) * f;
+        }
+      }
+    }
+
+    for (let i = 0; i < BANDS; i++){
+      linkPaths[i] = new Path2D();
+      cursorPaths[i] = new Path2D();
+      dotPaths[i] = new Path2D();
+    }
+
+    // neighbour links, bucketed by how close the pair is
+    const link2 = CFG.linkDist * CFG.linkDist;
+    for (let i = 0; i < parts.length; i++){
+      const a = parts[i];
+      for (let j = i + 1; j < parts.length; j++){
+        const b = parts[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d2 = dx * dx + dy * dy;            // squared: skips the sqrt
+        if (d2 > link2) continue;
+        const t = 1 - Math.sqrt(d2) / CFG.linkDist;
+        const band = Math.min(BANDS - 1, (t * BANDS) | 0);
+        const pth = linkPaths[band];
+        pth.moveTo(a.x, a.y);
+        pth.lineTo(b.x, b.y);
+      }
+    }
+
+    // brighter links from the cursor to whatever is near it
+    if (mouse.active){
+      const pull2 = CFG.pullDist * CFG.pullDist;
+      for (const p of parts){
+        const dx = mouse.x - p.x, dy = mouse.y - p.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 > pull2) continue;
+        const t = 1 - Math.sqrt(d2) / CFG.pullDist;
+        const band = Math.min(BANDS - 1, (t * BANDS) | 0);
+        const pth = cursorPaths[band];
+        pth.moveTo(mouse.x, mouse.y);
+        pth.lineTo(p.x, p.y);
+      }
+    }
+
+    for (const p of parts){
+      const band = Math.min(BANDS - 1, (((p.a - 0.25) / 0.45) * BANDS) | 0);
+      const pth = dotPaths[band];
+      pth.moveTo(p.x + p.r, p.y);
+      pth.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    }
+
+    ctx.lineWidth = 1;
+    for (let i = 0; i < BANDS; i++){
+      const t = (i + 0.5) / BANDS;
+      ctx.strokeStyle = CFG.line + (t * 0.22).toFixed(3) + ')';
+      ctx.stroke(linkPaths[i]);
+    }
+    if (mouse.active){
+      for (let i = 0; i < BANDS; i++){
+        const t = (i + 0.5) / BANDS;
+        ctx.strokeStyle = CFG.cursorLine + (t * 0.5).toFixed(3) + ')';
+        ctx.stroke(cursorPaths[i]);
+      }
+    }
+    for (let i = 0; i < BANDS; i++){
+      const t = 0.25 + ((i + 0.5) / BANDS) * 0.45;
+      ctx.fillStyle = CFG.dot + t.toFixed(3) + ')';
+      ctx.fill(dotPaths[i]);
+    }
+
+    raf = requestAnimationFrame(frame);
+  }
+
+  function start(){ if (!running){ running = true; raf = requestAnimationFrame(frame); } }
+  function stop(){ running = false; if (raf) cancelAnimationFrame(raf); raf = null; }
+
+  addEventListener('pointermove', e => {
+    // skip touch, dragging the field around on a phone feels wrong
+    if (e.pointerType === 'touch') return;
+    mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true;
+  }, { passive: true });
+
+  addEventListener('pointerleave', () => { mouse.active = false; }, { passive: true });
+  addEventListener('blur', () => { mouse.active = false; });
+
+  let rt;
+  addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 150); }, { passive: true });
+
+  document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+
+  // handle the setting changing while the page is open
+  reduced.addEventListener('change', e => {
+    if (e.matches){ stop(); canvas.style.display = 'none'; }
+    else { canvas.style.display = 'block'; resize(); start(); }
+  });
+
+  resize();
+  start();
+})();
+
+
+// pulls repos tagged `portfolio` from the API; falls back to the markup
+const GH_USER  = 'a-khavish';
+const GH_TOPIC = 'portfolio';
+const GH_MAX   = 8;
+
+// display names; anything missing uses the repo name as-is
+const GH_TITLES = {
+  quietude: 'Quietude',
+  quenchkey: 'Quenchkey',
+  camaloop: 'Camaloop',
+  stegtexthider: 'stegtexthider'
+};
+
+// language dot colours
+const GH_LANG_COLOUR = {
+  Python:'#3776AB', JavaScript:'#F0DB4F', Vue:'#41B883', TypeScript:'#3178C6',
+  HTML:'#E34C26', CSS:'#2965F1', Shell:'#89E051', C:'#555555', 'C++':'#F34B7D',
+  Java:'#B07219', PHP:'#777BB4'
+};
+
+function ghPiece(repo){
+  const a = document.createElement('a');
+  a.className = 'piece';
+  a.href = repo.html_url;
+  a.target = '_blank';
+  a.rel = 'noopener';
+
+  const left = document.createElement('span');
+
+  const name = document.createElement('span');
+  name.className = 'piece__name';
+  name.textContent = GH_TITLES[repo.name] || repo.name;
+  left.appendChild(name);
+
+  const desc = document.createElement('span');
+  desc.className = 'piece__desc';
+  desc.textContent = repo.description || 'No description set on GitHub yet.';
+  left.appendChild(desc);
+
+  // topics become tags, minus the selector itself
+  const tags = (repo.topics || []).filter(t => t !== GH_TOPIC).slice(0, 6);
+  if (tags.length){
+    const wrap = document.createElement('span');
+    wrap.className = 'tags';
+    tags.forEach(t => {
+      const el = document.createElement('span');
+      el.className = 'tag';
+      el.textContent = t;
+      wrap.appendChild(el);
+    });
+    left.appendChild(wrap);
+  }
+
+  if (repo.language){
+    const meta = document.createElement('span');
+    meta.className = 'piece__meta';
+    const lang = document.createElement('span');
+    lang.className = 'piece__lang';
+    const dot = document.createElement('span');
+    dot.className = 'piece__dot';
+    dot.style.background = GH_LANG_COLOUR[repo.language] || 'var(--current)';
+    lang.appendChild(dot);
+    lang.appendChild(document.createTextNode(repo.language));
+    meta.appendChild(lang);
+    if (repo.stargazers_count > 0){
+      const stars = document.createElement('span');
+      stars.textContent = '★ ' + repo.stargazers_count;
+      meta.appendChild(stars);
+    }
+    left.appendChild(meta);
+  }
+
+  a.appendChild(left);
+  const go = document.createElement('span');
+  go.className = 'piece__go';
+  go.setAttribute('aria-hidden','true');
+  go.textContent = '↗';
+  a.appendChild(go);
+  return a;
+}
+
+async function loadProjects(){
+  const list = document.getElementById('work-list');
+  if (!list) return;
+
+  let repos;
+  try {
+    const res = await fetch(
+      `https://api.github.com/users/${GH_USER}/repos?per_page=100&sort=pushed`,
+      { headers: { Accept: 'application/vnd.github+json' } }
+    );
+    if (!res.ok) return;              // rate limited, offline, renamed account
+    repos = await res.json();
+  } catch { return; }                 // keep the hand-written list
+  if (!Array.isArray(repos)) return;
+
+  const picked = repos
+    .filter(r => !r.private && !r.fork && !r.archived)
+    .filter(r => (r.topics || []).includes(GH_TOPIC))
+    .slice(0, GH_MAX);
+
+  if (!picked.length) return;         // nothing tagged yet, leave the fallback alone
+
+  list.dataset.busy = '1';
+  const built = document.createDocumentFragment();
+  picked.forEach(r => built.appendChild(ghPiece(r)));
+  list.replaceChildren(built);
+  requestAnimationFrame(() => { list.dataset.busy = '0'; });
+}
+
+loadProjects();
+
+
+// active tab follows scroll position; recentres itself on narrow screens
+const tabs = Array.from(document.querySelectorAll('.tab'));
+const bar = document.getElementById('tabs');
+const panels = tabs
+  .map(t => document.querySelector(t.getAttribute('href')))
+  .filter(Boolean);
+
+let locked = false;   // ignore observer while a click-scroll is in flight
+
+function setActive(id){
+  tabs.forEach(t => {
+    const on = t.getAttribute('href') === '#' + id;
+    t.setAttribute('aria-current', on ? 'true' : 'false');
+    if (on && bar.scrollWidth > bar.clientWidth) {
+      const left = t.offsetLeft - (bar.clientWidth - t.offsetWidth) / 2;
+      bar.scrollTo({left, behavior: 'smooth'});
+    }
+  });
+}
+
+const spy = new IntersectionObserver((entries) => {
+  if (locked) return;
+  const visible = entries
+    .filter(e => e.isIntersecting)
+    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+  if (visible) setActive(visible.target.id);
+}, {
+  rootMargin: '-120px 0px -55% 0px',
+  threshold: [0.1, 0.4, 0.75]
+});
+panels.forEach(p => spy.observe(p));
+
+tabs.forEach(t => {
+  t.addEventListener('click', () => {
+    const id = t.getAttribute('href').slice(1);
+    setActive(id);
+    locked = true;
+    clearTimeout(t._unlock);
+    t._unlock = setTimeout(() => locked = false, 700);
+  });
+});
+
+// hero sits above the first section, so clear the tab at the top
+addEventListener('scroll', () => {
+  if (window.scrollY < 120 && !locked) {
+    tabs.forEach(t => t.setAttribute('aria-current', 'false'));
+  }
+}, {passive: true});
+
+</script>
+</body>
+</html>
