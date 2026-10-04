@@ -188,14 +188,17 @@ p{margin:0}
 
 .btn{
   display:inline-block;font-family:var(--font-body);font-weight:600;
-  font-size:var(--step--1);padding:.85rem 1.6rem;border-radius:999px;
+  font-size:var(--step--1);line-height:1.65;padding:.85rem 1.6rem;border-radius:999px;
   text-decoration:none;border:1px solid transparent;cursor:pointer;
+  /* buttons and anchors share these classes, so neutralise the UA button styles */
+  background:transparent;appearance:none;-webkit-appearance:none;margin:0;
   transition:background .2s ease,border-color .2s ease,color .2s ease;
 }
 .btn--solid{background:var(--foam);color:#04121A;box-shadow:0 8px 32px -12px rgba(95,212,228,.6)}
 .btn--solid:hover{background:var(--spray)}
 .btn--solid:disabled{opacity:.55;cursor:not-allowed}
 .btn--ghost{border-color:var(--current);color:var(--sand)}
+.btn--ghost:hover{background:rgba(95,212,228,.06)}
 .btn--ghost:hover{border-color:var(--foam);color:var(--foam)}
 
 .rise{opacity:0;transform:translateY(14px);animation:rise .9s cubic-bezier(.2,.7,.3,1) forwards}
