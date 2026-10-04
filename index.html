@@ -83,6 +83,14 @@ p{margin:0}
   position:fixed;inset:0;z-index:-1;pointer-events:none;
   width:100%;height:100%;display:block;
 }
+@media(max-height:520px) and (orientation:landscape){
+  .hero{padding:2.2rem 0 2.4rem}
+  .hero h1{font-size:clamp(2rem,1.2rem + 3.4vw,3rem);margin-bottom:1rem}
+  .hero__kicker{margin-bottom:.9rem}
+  .hero__lede{font-size:1rem;margin-bottom:1.3rem}
+  .section{padding:2.6rem 0}
+}
+
 @media(prefers-reduced-motion:reduce){#field{display:none}}
 
 .strata{
@@ -101,12 +109,12 @@ p{margin:0}
 .nav__in{
   width:var(--col);margin-inline:auto;
   display:flex;align-items:center;justify-content:space-between;
-  gap:2rem;padding:1.05rem 0;
+  gap:1rem;padding:1.05rem 0;flex-wrap:nowrap;
 }
 .mark{
   font-family:var(--font-display);font-weight:700;font-size:1.02rem;
   letter-spacing:-.02em;color:var(--sand);text-decoration:none;
-  display:flex;align-items:center;gap:.6rem;
+  display:flex;align-items:center;gap:.6rem;white-space:nowrap;
 }
 .mark__dot{
   width:9px;height:9px;border-radius:50%;background:var(--foam);
@@ -121,7 +129,7 @@ p{margin:0}
 
 /* the tab bar */
 .tabs{
-  position:sticky;top:60px;z-index:38;
+  position:sticky;top:var(--navh,60px);z-index:38;
   background:rgba(5,11,22,.9);
   backdrop-filter:blur(14px);
   border-bottom:1px solid var(--edge-soft);
@@ -133,6 +141,10 @@ p{margin:0}
   scroll-snap-type:x proximity;
 }
 .tabs__in::-webkit-scrollbar{display:none}
+.tabs__in[data-more="1"]{
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 42px),transparent);
+          mask-image:linear-gradient(90deg,#000 calc(100% - 42px),transparent);
+}
 .tab{
   position:relative;flex:none;scroll-snap-align:start;
   padding:.95rem 1.15rem;
@@ -150,9 +162,16 @@ p{margin:0}
 .tab[aria-current="true"]{color:var(--spray)}
 .tab[aria-current="true"]::after{transform:scaleX(1)}
 @media(max-width:620px){
-  .tabs{top:56px}
-  .tab{padding:.85rem .85rem}
-  :root{--bar:100px}
+  .tab{padding:.85rem .8rem;font-size:.8rem}
+}
+@media(max-width:430px){
+  :root{--col:min(1120px,calc(100% - 2rem))}
+  .mark{font-size:.92rem;gap:.45rem}
+  .mark__dot{width:7px;height:7px}
+  .nav__cta{padding:.4rem .8rem;font-size:.78rem}
+}
+@media(max-width:340px){
+  .nav__cta{display:none}
 }
 
 /* hero */
@@ -249,7 +268,7 @@ p{margin:0}
 .piece__desc{display:block;color:var(--mist);max-width:58ch;font-size:.97rem;line-height:1.6}
 .piece__with{display:block;color:var(--foam);font-size:var(--step--1);margin-top:.5rem;opacity:.85}
 .tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.85rem}
-.tag{font-size:.74rem;color:var(--mist);border:1px solid var(--edge-soft);padding:.2rem .6rem;border-radius:999px}
+.tag{font-size:.79rem;color:var(--mist);border:1px solid var(--edge-soft);padding:.2rem .6rem;border-radius:999px}
 .piece__go{color:var(--mist);font-size:1.3rem;line-height:1;transition:color .2s ease,transform .2s ease}
 .piece:hover .piece__go{color:var(--foam);transform:translateX(3px)}
 @media(max-width:620px){.piece{grid-template-columns:1fr;gap:.5rem}.piece__go{display:none}}
@@ -337,6 +356,14 @@ p{margin:0}
 .social svg{width:17px;height:17px;fill:currentColor}
 .foot__meta{color:var(--mist);font-size:var(--step--1);text-align:right}
 @media(max-width:620px){.foot__meta{text-align:left}}
+
+@media(max-height:520px) and (orientation:landscape){
+  .hero{padding:2.2rem 0 2.4rem}
+  .hero h1{font-size:clamp(2rem,1.2rem + 3.4vw,3rem);margin-bottom:1rem}
+  .hero__kicker{margin-bottom:.9rem}
+  .hero__lede{font-size:1rem;margin-bottom:1.3rem}
+  .section{padding:2.6rem 0}
+}
 
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -815,6 +842,35 @@ p{margin:0}
 
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// nav and tab-bar heights drive the sticky offset and scroll-margin.
+// measured rather than hard-coded, so a wrapped brand, a zoomed page or a
+// late-loading font can't leave the tab bar sitting on top of the header.
+(() => {
+  const nav  = document.querySelector('.nav');
+  const tabs = document.querySelector('.tabs');
+  const strip = document.getElementById('tabs');
+  if (!nav || !tabs) return;
+
+  function sync(){
+    const n = Math.round(nav.getBoundingClientRect().height);
+    const t = Math.round(tabs.getBoundingClientRect().height);
+    document.documentElement.style.setProperty('--navh', n + 'px');
+    document.documentElement.style.setProperty('--bar', (n + t) + 'px');
+    if (strip) strip.dataset.more = strip.scrollWidth > strip.clientWidth + 2 ? '1' : '0';
+  }
+
+  sync();
+  addEventListener('resize', sync, { passive: true });
+  if (strip) strip.addEventListener('scroll', () => {
+    const atEnd = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 2;
+    strip.dataset.more = atEnd ? '0' : (strip.scrollWidth > strip.clientWidth + 2 ? '1' : '0');
+  }, { passive: true });
+
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sync);
+  if (window.ResizeObserver) new ResizeObserver(sync).observe(nav);
+})();
+
 
 // mailto: is dead for a lot of webmail users, so offer the text too
 (() => {
